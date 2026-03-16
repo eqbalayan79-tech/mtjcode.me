@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTJ Hotels • Luxury Redefined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+        
+        :root {
+            --gold: #d4af37;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+                              url('https://picsum.photos/id/1015/2000/1200');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .room-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .room-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        .membership-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .membership-card.gold {
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.15);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #d4af37;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .booking-modal {
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="tail-container bg-zinc-950 text-zinc-200">
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-full flex items-center justify-center text-2xl shadow-inner">
+                    <span class="text-zinc-950 font-bold">MTJ</span>
+                </div>
+                <div>
+                    <span class="logo-font text-3xl font-bold tracking-tight text-white">MTJ</span>
+                    <span class="logo-font text-3xl font-bold tracking-tight text-amber-400">HOTELS</span>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#rooms" onclick="smoothScrollTo('rooms')" class="nav-link text-zinc-300 hover:text-white">Rooms</a>
+                <a href="#memberships" onclick="smoothScrollTo('memberships')" class="nav-link text-zinc-300 hover:text-white">Memberships</a>
+                <a href="#book" onclick="smoothScrollTo('book')" class="nav-link text-zinc-300 hover:text-white">Book Now</a>
+                <a href="#about" onclick="smoothScrollTo('about')" class="nav-link text-zinc-300 hover:text-white">About</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="showLoginModal()" 
+                        class="px-6 py-2.5 text-sm font-semibold border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-zinc-950 transition rounded-full">
+                    Member Login
+                </button>
+                <button onclick="smoothScrollTo('book')"
+                        class="px-8 py-2.5 bg-amber-400 hover:bg-amber-500 text-zinc-950 font-semibold rounded-full transition flex items-center gap-2">
+                    <i class="fas fa-calendar"></i>
+                    Reserve
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-bg h-screen flex items-center justify-center text-center relative">
+        <div class="max-w-4xl px-6">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-6 py-2 rounded-full text-sm mb-6">
+                <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                VARANASI • INDIA
+            </div>
+            
+            <h1 class="logo-font text-7xl md:text-8xl font-bold text-white tracking-tighter leading-none mb-4">
+                MTJ HOTELS
+            </h1>
+            <p class="text-2xl text-amber-100 font-light mb-10">Where timeless luxury meets the soul of Varanasi</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="smoothScrollTo('book')" 
+                        class="px-12 py-5 bg-white text-zinc-950 font-semibold text-lg rounded-2xl hover:scale-105 transition flex items-center justify-center gap-3 shadow-2xl">
+                    <i class="fas fa-bed"></i>
+                    BOOK YOUR STAY
+                </button>
+                <button onclick="smoothScrollTo('rooms')" 
+                        class="px-12 py-5 border-2 border-white text-white font-semibold text-lg rounded-2xl hover:bg-white hover:text-zinc-950 transition">
+                    EXPLORE ROOMS
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 flex flex-col items-center text-white/70 text-xs tracking-widest">
+            <div class="animate-bounce">SCROLL</div>
+            <i class="fas fa-chevron-down mt-2"></i>
+        </div>
+    </header>
+
+    <!-- ROOMS SECTION -->
+    <section id="rooms" class="py-24 bg-zinc-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="uppercase tracking-[4px] text-amber-400 text-sm font-medium">OUR COLLECTION</span>
+                <h2 class="logo-font text-5xl font-bold text-white mt-3">Signature Rooms &amp; Suites</h2>
+                <p class="text-zinc-400 mt-4 max-w-md mx-auto">All rooms are currently available. Real-time availability updated live.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="rooms-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MEMBERSHIPS -->
+    <section id="memberships" class="py-24 bg-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="uppercase tracking-[4px] text-amber-400 text-sm font-medium">LOYALTY PROGRAM</span>
+                <h2 class="logo-font text-5xl font-bold text-white mt-3">Choose Your Tier</h2>
+                <p class="text-zinc-400 mt-4">Join today and enjoy exclusive privileges at MTJ Hotels</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Bronze -->
+                <div class="membership-card bg-zinc-900 border border-zinc-700 rounded-3xl p-8">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-3xl font-bold text-amber-300">BRONZE</div>
+                            <div class="text-zinc-500 text-sm">Free to join</div>
+                        </div>
+                        <div class="text-4xl">🥉</div>
+                    </div>
+                    <ul class="mt-10 space-y-4 text-zinc-300">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> 5% discount on all stays</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Early check-in (subject to availability)</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Complimentary Wi-Fi</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> 500 loyalty points on signup</li>
+                    </ul>
+                    <button onclick="selectMembership('Bronze')" 
+                            class="mt-12 w-full py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-2xl transition">
+                        JOIN BRONZE — FREE
+                    </button>
+                </div>
+
+                <!-- Silver -->
+                <div class="membership-card bg-zinc-900 border border-zinc-700 rounded-3xl p-8 relative">
+                    <div class="absolute -top-3 right-6 bg-amber-400 text-zinc-950 text-xs font-bold px-6 py-1 rounded-full">MOST POPULAR</div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-3xl font-bold text-white">SILVER</div>
+                            <div class="text-zinc-500 text-sm">$99 / year</div>
+                        </div>
+                        <div class="text-4xl">🥈</div>
+                    </div>
+                    <ul class="mt-10 space-y-4 text-zinc-300">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> 12% discount on all stays</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Free late check-out till 4 PM</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Access to Executive Lounge</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> 1 complimentary breakfast per stay</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Priority room upgrade</li>
+                    </ul>
+                    <button onclick="selectMembership('Silver')" 
+                            class="mt-12 w-full py-4 bg-white text-zinc-950 font-semibold rounded-2xl hover:bg-amber-400 transition">
+                        JOIN SILVER — $99/YEAR
+                    </button>
+                </div>
+
+                <!-- Gold -->
+                <div class="membership-card gold bg-gradient-to-br from-zinc-900 to-black border border-amber-400 rounded-3xl p-8">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-3xl font-bold text-amber-400">GOLD</div>
+                            <div class="text-amber-300 text-sm">$299 / year</div>
+                        </div>
+                        <div class="text-4xl">🥇</div>
+                    </div>
+                    <ul class="mt-10 space-y-4 text-zinc-200">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> 20% discount on all stays</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Guaranteed suite upgrade</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Private airport transfer</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> Complimentary spa session</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> 24×7 personal concierge</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-400"></i> VIP access to all events</li>
+                    </ul>
+                    <button onclick="selectMembership('Gold')" 
+                            class="mt-12 w-full py-4 bg-amber-400 text-zinc-950 font-bold rounded-2xl hover:bg-yellow-300 transition">
+                        JOIN GOLD — $299/YEAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKING SECTION -->
+    <section id="book" class="py-24 bg-zinc-950">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="bg-zinc-900 rounded-3xl p-10 md:p-16 shadow-2xl">
+                <div class="grid md:grid-cols-12 gap-16">
+                    <!-- Left: Form -->
+                    <div class="md:col-span-7">
+                        <h2 class="logo-font text-5xl font-bold mb-8">Reserve Your Escape</h2>
+                        
+                        <form id="booking-form" class="space-y-8">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-400 mb-2">CHECK-IN</label>
+                                    <input type="date" id="checkin" 
+                                           class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-400">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-400 mb-2">CHECK-OUT</label>
+                                    <input type="date" id="checkout" 
+                                           class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-400">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-400 mb-2">GUESTS</label>
+                                    <select id="guests" 
+                                            class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-400">
+                                        <option value="1">1 Guest</option>
+                                        <option value="2" selected>2 Guests</option>
+                                        <option value="3">3 Guests</option>
+                                        <option value="4">4 Guests</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-400 mb-2">MEMBERSHIP TIER</label>
+                                    <select id="membership" onchange="updatePricePreview()"
+                                            class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-400">
+                                        <option value="0">None (0% discount)</option>
+                                        <option value="5">Bronze — 5%</option>
+                                        <option value="12">Silver — 12%</option>
+                                        <option value="20">Gold — 20%</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-zinc-400 mb-2">ROOM TYPE</label>
+                                <select id="room-type" onchange="updatePricePreview()"
+                                        class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-400">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+
+                            <!-- Price preview -->
+                            <div id="price-preview" class="bg-black rounded-2xl p-6 hidden">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-zinc-400">Base price per night</span>
+                                    <span id="base-price-display" class="font-medium">₹18,000</span>
+                                </div>
+                                <div class="flex justify-between text-sm mt-3">
+                                    <span class="text-zinc-400">Nights</span>
+                                    <span id="nights-display" class="font-medium">3</span>
+                                </div>
+                                <div class="flex justify-between text-sm mt-3">
+                                    <span class="text-zinc-400">Membership discount</span>
+                                    <span id="discount-display" class="font-medium text-emerald-400">-₹0</span>
+                                </div>
+                                <hr class="my-4 border-zinc-700">
+                                <div class="flex justify-between text-lg font-semibold">
+                                    <span>Total</span>
+                                    <span id="total-price" class="text-amber-400">₹54,000</span>
+                                </div>
+                            </div>
+
+                            <button type="button" onclick="confirmBooking()" 
+                                    class="w-full py-6 bg-gradient-to-r from-amber-400 to-yellow-500 text-zinc-950 font-bold text-xl rounded-2xl hover:scale-105 transition shadow-xl">
+                                CONFIRM BOOKING • SECURE PAYMENT
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Availability & Info -->
+                    <div class="md:col-span-5 bg-zinc-950 rounded-3xl p-8 border border-zinc-800">
+                        <div class="text-emerald-400 flex items-center gap-2 text-sm mb-6">
+                            <div class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
+                            ALL ROOMS CURRENTLY AVAILABLE
+                        </div>
+                        
+                        <h3 class="text-xl font-semibold mb-6">Live Room Availability</h3>
+                        
+                        <div id="availability-list" class="space-y-4">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <div class="mt-12 pt-8 border-t border-zinc-700">
+                            <div class="flex items-center gap-4 text-xs uppercase tracking-widest text-zinc-400">
+                                <div class="flex-1 h-px bg-zinc-700"></div>
+                                WHY MTJ
+                                <div class="flex-1 h-px bg-zinc-700"></div>
+                            </div>
+                            <ul class="mt-6 space-y-5 text-sm">
+                                <li class="flex gap-4"><i class="fas fa-shield-alt text-amber-400 mt-1"></i> <span>100% secure booking with SSL encryption</span></li>
+                                <li class="flex gap-4"><i class="fas fa-clock text-amber-400 mt-1"></i> <span>Free cancellation up to 48 hours before arrival</span></li>
+                                <li class="flex gap-4"><i class="fas fa-star text-amber-400 mt-1"></i> <span>5-star service rated 4.98/5 by guests</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-24 bg-zinc-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <img src="https://picsum.photos/id/1016/800/900" alt="MTJ Hotels Interior" 
+                         class="rounded-3xl shadow-2xl">
+                </div>
+                <div class="space-y-8">
+                    <div class="uppercase text-amber-400 text-sm tracking-[3px]">EST. 2018 • VARANASI</div>
+                    <h2 class="logo-font text-6xl font-bold leading-none">A legacy of elegance on the banks of the Ganges</h2>
+                    <p class="text-zinc-400 text-lg leading-relaxed">
+                        Nestled in the spiritual heart of Varanasi, MTJ Hotels offers 78 exquisitely designed rooms and suites 
+                        with breathtaking views of the sacred river. Every stay is an experience of timeless Indian hospitality 
+                        blended with modern luxury.
+                    </p>
+                    
+                    <div class="grid grid-cols-3 gap-8">
+                        <div>
+                            <div class="text-4xl font-bold text-white">78</div>
+                            <div class="text-xs tracking-widest text-zinc-500">ROOMS &amp; SUITES</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-white">4</div>
+                            <div class="text-xs tracking-widest text-zinc-500">RESTAURANTS</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-white">2</div>
+                            <div class="text-xs tracking-widest text-zinc-500">SPAS</div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.open('https://wa.me/919876543210', '_blank')" 
+                            class="flex items-center gap-3 text-amber-400 hover:text-amber-300">
+                        <i class="fab fa-whatsapp text-3xl"></i>
+                        <span class="font-medium">Talk to our concierge on WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-20">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-full flex items-center justify-center text-xl">MTJ</div>
+                    <span class="logo-font text-3xl font-bold">MTJ HOTELS</span>
+                </div>
+                <p class="text-zinc-400 text-sm">Varanasi's most exclusive address since 2018</p>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold text-white mb-4">Quick Links</h4>
+                <ul class="space-y-3 text-sm text-zinc-400">
+                    <li><a href="#rooms" class="hover:text-white">Rooms &amp; Suites</a></li>
+                    <li><a href="#memberships" class="hover:text-white">Membership Program</a></li>
+                    <li><a href="#" class="hover:text-white">Dining</a></li>
+                    <li><a href="#" class="hover:text-white">Spa &amp; Wellness</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold text-white mb-4">Contact</h4>
+                <div class="space-y-3 text-sm">
+                    <p class="text-zinc-400">Assi Ghat Road, Varanasi, Uttar Pradesh 221005</p>
+                    <p class="text-zinc-400">+91 98765 43210</p>
+                    <p class="text-amber-400">reservations@mtjhotels.com</p>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-semibold text-white mb-4">Follow Us</h4>
+                <div class="flex gap-6 text-2xl">
+                    <i class="fab fa-instagram hover:text-amber-400 cursor-pointer"></i>
+                    <i class="fab fa-facebook hover:text-amber-400 cursor-pointer"></i>
+                    <i class="fab fa-twitter hover:text-amber-400 cursor-pointer"></i>
+                </div>
+                <div class="mt-12 text-xs text-zinc-500">
+                    © 2026 MTJ Hotels Private Limited.<br>
+                    All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOOKING CONFIRMATION MODAL -->
+    <div id="booking-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[999]">
+        <div class="booking-modal bg-zinc-900 rounded-3xl max-w-lg w-full mx-4 overflow-hidden">
+            <div class="px-8 py-6 border-b border-zinc-700 flex justify-between items-center">
+                <div class="font-semibold text-xl">Booking Confirmed!</div>
+                <button onclick="closeModal()" class="text-3xl leading-none text-zinc-400 hover:text-white">×</button>
+            </div>
+            
+            <div class="p-8 text-center">
+                <div id="modal-room-name" class="text-2xl font-medium mb-2"></div>
+                <div id="modal-dates" class="text-zinc-400 mb-8"></div>
+                
+                <div class="bg-black rounded-2xl p-6 text-left text-sm mb-8">
+                    <div class="flex justify-between py-3 border-b border-zinc-700">
+                        <span class="text-zinc-400">Total amount</span>
+                        <span id="modal-total" class="font-semibold text-amber-400"></span>
+                    </div>
+                    <div class="flex justify-between py-3">
+                        <span class="text-zinc-400">Booking ID</span>
+                        <span id="modal-booking-id" class="font-mono text-emerald-400">MTJ-20260316-7842</span>
+                    </div>
+                </div>
+                
+                <p class="text-zinc-400 text-sm">A confirmation email has been sent to your registered address.<br>
+                We can't wait to welcome you at MTJ Hotels.</p>
+            </div>
+            
+            <div class="p-6 border-t border-zinc-700 flex gap-4">
+                <button onclick="closeModal()" 
+                        class="flex-1 py-5 border border-zinc-600 hover:bg-zinc-800 rounded-2xl font-medium">
+                    CLOSE
+                </button>
+                <button onclick="closeModal()" 
+                        class="flex-1 py-5 bg-amber-400 text-zinc-950 rounded-2xl font-semibold">
+                    ADD TO CALENDAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL (demo) -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[999]">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-md p-8">
+            <h3 class="text-2xl font-semibold mb-8 text-center">Member Login</h3>
+            <div class="space-y-6">
+                <input type="email" placeholder="Email" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4">
+                <input type="password" placeholder="Password" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4">
+                
+                <button onclick="fakeLogin()" 
+                        class="w-full py-4 bg-white text-black font-semibold rounded-2xl">LOGIN</button>
+                
+                <div class="text-center text-xs text-zinc-400">
+                    Demo login works instantly<br>
+                    <span class="text-amber-400 cursor-pointer" onclick="closeLoginModal()">Close</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script run
+        function initializeTailwind() {
+            // Already initialized via CDN
+        }
+
+        // Sample rooms data
+        const rooms = [
+            {
+                id: 1,
+                name: "Deluxe River View",
+                type: "Deluxe",
+                price: 18000,
+                image: "https://picsum.photos/id/1015/600/400",
+                available: true,
+                capacity: "2 Guests",
+                size: "42 m²"
+            },
+            {
+                id: 2,
+                name: "Executive Suite",
+                type: "Suite",
+                price: 32000,
+                image: "https://picsum.photos/id/201/600/400",
+                available: true,
+                capacity: "4 Guests",
+                size: "78 m²"
+            },
+            {
+                id: 3,
+                name: "Presidential Ganges Suite",
+                type: "Presidential",
+                price: 85000,
+                image: "https://picsum.photos/id/1016/600/400",
+                available: true,
+                capacity: "6 Guests",
+                size: "145 m²"
+            }
+        ]
+
+        // Render rooms grid
+        function renderRooms() {
+            const container = document.getElementById('rooms-grid')
+            container.innerHTML = ''
+
+            rooms.forEach(room => {
+                const div = document.createElement('div')
+                div.className = `room-card bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden`
+                div.innerHTML = `
+                    <img src="${room.image}" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-xl">${room.name}</div>
+                                <div class="text-amber-400 text-sm">${room.size} • ${room.capacity}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs text-zinc-400">FROM</div>
+                                <div class="text-2xl font-bold text-white">₹${room.price.toLocaleString('en-IN')}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex items-center justify-between">
+                            <div class="${room.available ? 'bg-emerald-400 text-zinc-950' : 'bg-red-500'} text-xs font-bold px-5 py-2 rounded-full">
+                                ${room.available ? 'AVAILABLE NOW' : 'BOOKED'}
+                            </div>
+                            <button onclick="selectRoomForBooking(${room.id})" 
+                                    class="text-amber-400 hover:text-amber-300 font-medium flex items-center gap-2">
+                                SELECT 
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                `
+                container.appendChild(div)
+            })
+        }
+
+        // Render availability list
+        function renderAvailability() {
+            const container = document.getElementById('availability-list')
+            container.innerHTML = ''
+            
+            rooms.forEach(room => {
+                const div = document.createElement('div')
+                div.className = "flex items-center justify-between bg-zinc-900 rounded-2xl px-5 py-4"
+                div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <img src="${room.image}" class="w-12 h-12 object-cover rounded-xl">
+                        <div>
+                            <div class="font-medium">${room.name}</div>
+                            <div class="text-xs text-zinc-400">₹${room.price.toLocaleString('en-IN')} / night</div>
+                        </div>
+                    </div>
+                    <div class="text-emerald-400 text-xs font-bold">✓ AVAILABLE</div>
+                `
+                container.appendChild(div)
+            })
+        }
+
+        // Populate room select in booking form
+        function populateRoomSelect() {
+            const select = document.getElementById('room-type')
+            select.innerHTML = `<option value="">Choose a room...</option>`
+            
+            rooms.forEach(room => {
+                const opt = document.createElement('option')
+                opt.value = room.id
+                opt.textContent = `${room.name} — ₹${room.price.toLocaleString('en-IN')}/night`
+                select.appendChild(opt)
+            })
+        }
+
+        // Update live price preview
+        let selectedRoom = null
+
+        function updatePricePreview() {
+            const roomId = parseInt(document.getElementById('room-type').value)
+            if (!roomId) {
+                document.getElementById('price-preview').classList.add('hidden')
+                return
+            }
+            
+            selectedRoom = rooms.find(r => r.id === roomId)
+            const checkin = document.getElementById('checkin').value
+            const checkout = document.getElementById('checkout').value
+            const discount = parseFloat(document.getElementById('membership').value) || 0
+            
+            if (!checkin || !checkout || !selectedRoom) return
+            
+            const date1 = new Date(checkin)
+            const date2 = new Date(checkout)
+            const nights = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24))
+            
+            if (nights < 1) return
+            
+            const baseTotal = selectedRoom.price * nights
+            const discountAmount = Math.round(baseTotal * (discount / 100))
+            const finalTotal = baseTotal - discountAmount
+            
+            // Show preview
+            const preview = document.getElementById('price-preview')
+            preview.classList.remove('hidden')
+            
+            document.getElementById('base-price-display').textContent = `₹${selectedRoom.price.toLocaleString('en-IN')}`
+            document.getElementById('nights-display').textContent = nights
+            document.getElementById('discount-display').textContent = `-₹${discountAmount.toLocaleString('en-IN')}`
+            document.getElementById('total-price').textContent = `₹${finalTotal.toLocaleString('en-IN')}`
+        }
+
+        // Select room from room cards
+        function selectRoomForBooking(roomId) {
+            document.getElementById('room-type').value = roomId
+            smoothScrollTo('book')
+            updatePricePreview()
+        }
+
+        // Fake membership selection
+        function selectMembership(tier) {
+            alert(`✅ Welcome to ${tier} Membership!\n\nYour account has been created.\nYou will receive a welcome kit shortly.`)
+        }
+
+        // Confirm booking
+        function confirmBooking() {
+            const roomId = parseInt(document.getElementById('room-type').value)
+            if (!roomId) {
+                alert("Please select a room type")
+                return
+            }
+            
+            const checkin = document.getElementById('checkin').value
+            const checkout = document.getElementById('checkout').value
+            
+            if (!checkin || !checkout) {
+                alert("Please select check-in and check-out dates")
+                return
+            }
+            
+            const room = rooms.find(r => r.id === roomId)
+            const nights = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24))
+            const discount = parseFloat(document.getElementById('membership').value) || 0
+            const base = room.price * nights
+            const final = Math.round(base * (1 - discount/100))
+            
+            // Fill modal
+            document.getElementById('modal-room-name').textContent = room.name
+            document.getElementById('modal-dates').innerHTML = `
+                ${new Date(checkin).toLocaleDateString('en-IN', {weekday:'short', month:'short', day:'numeric'})} 
+                — 
+                ${new Date(checkout).toLocaleDateString('en-IN', {weekday:'short', month:'short', day:'numeric'})}
+            `
+            document.getElementById('modal-total').textContent = `₹${final.toLocaleString('en-IN')}`
+            document.getElementById('modal-booking-id').textContent = `MTJ-${Math.floor(Math.random()*900000)+100000}`
+            
+            // Show modal
+            document.getElementById('booking-modal').classList.remove('hidden')
+            document.getElementById('booking-modal').classList.add('flex')
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('booking-modal')
+            modal.classList.add('hidden')
+            modal.classList.remove('flex')
+            
+            // Reset form after booking
+            document.getElementById('booking-form').reset()
+            document.getElementById('price-preview').classList.add('hidden')
+        }
+
+        // Fake login
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden')
+            document.getElementById('login-modal').classList.add('flex')
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('login-modal')
+            modal.classList.add('hidden')
+            modal.classList.remove('flex')
+        }
+
+        function fakeLogin() {
+            closeLoginModal()
+            setTimeout(() => {
+                alert("🎉 Welcome back, Ayan!\n\nYour Gold membership is active.\nYou have 12,450 loyalty points.")
+            }, 400)
+        }
+
+        // Smooth scroll helper
+        function smoothScrollTo(section) {
+            const el = document.getElementById(section)
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+
+        // Date constraints
+        function setDateConstraints() {
+            const today = new Date().toISOString().split('T')[0]
+            const checkin = document.getElementById('checkin')
+            const checkout = document.getElementById('checkout')
+            
+            checkin.min = today
+            checkout.min = today
+            
+            checkin.addEventListener('change', () => {
+                checkout.min = checkin.value
+                updatePricePreview()
+            })
+            
+            checkout.addEventListener('change', updatePricePreview)
+        }
+
+        // Keyboard shortcuts & listeners
+        function addEventListeners() {
+            // Price preview auto update
+            const inputs = ['checkin', 'checkout', 'room-type', 'membership', 'guests']
+            inputs.forEach(id => {
+                const el = document.getElementById(id)
+                if (el) el.addEventListener('change', updatePricePreview)
+            })
+        }
+
+        // Initialize everything
+        function init() {
+            renderRooms()
+            renderAvailability()
+            populateRoomSelect()
+            setDateConstraints()
+            addEventListeners()
+            
+            // Set default dates for demo
+            const today = new Date()
+            const checkinDate = today.toISOString().split('T')[0]
+            const checkoutDate = new Date(today.getTime() + 3*86400000).toISOString().split('T')[0]
+            
+            document.getElementById('checkin').value = checkinDate
+            document.getElementById('checkout').value = checkoutDate
+            
+            // Trigger first price preview
+            setTimeout(() => {
+                document.getElementById('room-type').value = 1
+                updatePricePreview()
+            }, 1200)
+            
+            console.log('%c✅ MTJ Hotels website ready for GitHub Pages!', 'color:#d4af37; font-family:monospace')
+        }
+
+        // Run on load
+        window.onload = init
+    </script>
+</body>
+</html>
